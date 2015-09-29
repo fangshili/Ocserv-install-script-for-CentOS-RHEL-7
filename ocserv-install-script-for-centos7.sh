@@ -2,11 +2,15 @@
 ####################################################
 #                                                  #
 # This is a ocserv installation for CentOS 7       #
-# Version: 1.2.3 20150508                          #
+# Version: 1.2.4 20150929                          #
 # Author: Travis Lee                               #
+# Modification: Vincent Li                         #
 # Website: https://www.stunnel.info                #
 #                                                  #
 ####################################################
+#  Version: 1.2.4 20150929
+#  *更新ocserv版本为0.10.8
+#  *更新ocserv的下载路径
 
 #  Version: 1.2.3 20150508
 #  *更新libtasn1的版本为4.5
@@ -38,7 +42,7 @@ cd ${basepath}
 
 function ConfigEnvironmentVariable {
     #ocserv版本
-    ocserv_version=0.10.4
+    ocserv_version=0.10.8
     version=${1-${ocserv_version}}
     libtasn1_version=4.5
     #变量设置
@@ -160,7 +164,7 @@ _EOF_
      ##export LIBGNUTLS_CFLAGS="-I/usr/include/" LIBGNUTLS_LIBS="-L/usr/lib/ -lgnutls"
 
     #下载ocserv并编译安装
-    wget -t 0 -T 60 "ftp://ftp.infradead.org/pub/ocserv/ocserv-${version}.tar.xz"
+    wget -t 0 -T 60 "http://pkgs.fedoraproject.org/repo/pkgs/ocserv/ocserv-0.10.8.tar.xz/665b854377850db535271098a37213f1/ocserv-${version}.tar.xz"
     tar axf ocserv-${version}.tar.xz
     cd ocserv-${version}
     sed -i 's/#define MAX_CONFIG_ENTRIES.*/#define MAX_CONFIG_ENTRIES 200/g' src/vpn.h
@@ -180,7 +184,7 @@ function ConfigOcserv {
         certtool --generate-privkey --outfile ca-key.pem
 
         cat << _EOF_ >ca.tmpl
-cn = "stunnel.info VPN"
+cn = "Vultr VPN"
 organization = "stunnel.info"
 serial = 1
 expiration_days = 3650
@@ -195,7 +199,7 @@ _EOF_
         certtool --generate-privkey --outfile ${serverkey}
 
         cat << _EOF_ >server.tmpl
-cn = "stunnel.info VPN"
+cn = "Vultr VPN"
 o = "stunnel"
 serial = 2
 expiration_days = 3650
